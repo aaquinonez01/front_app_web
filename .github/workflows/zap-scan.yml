@@ -41,7 +41,7 @@ jobs:
       - name: Run OWASP ZAP scan
         uses: zaproxy/action-full-scan@v0.12.0
         with:
-          target: "http://localhost:3000"
+          target: "http://localhost:5173"
           fail_on_warn: true
 
       # 7. Subir los resultados del análisis
