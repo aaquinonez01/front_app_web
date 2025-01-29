@@ -37,6 +37,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
         if (response.success && response.data) {
           set({ user: response.data, status: "authenticated" });
         } else {
+          console.log(response.error);
           set({ status: "unauthenticated" });
         }
       });

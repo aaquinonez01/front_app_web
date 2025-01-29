@@ -22,9 +22,6 @@ export const PaginationPersonal: FC<PaginationPersonalProps> = ({
   previousPage,
   goToPage,
 }) => {
-  console.log("currentPage", currentPage);
-  console.log("totalPages", totalPages);
-
   return (
     <Pagination>
       <PaginationContent>

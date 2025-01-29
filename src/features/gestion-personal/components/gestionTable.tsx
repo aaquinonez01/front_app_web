@@ -11,12 +11,22 @@ import {
 import { usePersonalStore } from "../store/personalStore";
 import { Button } from "@/components/ui";
 import { PaginationPersonal } from "./Pagination";
+import { FC } from "react";
+import { User } from "@/config/types/users.types";
 
-export const GestionTable = () => {
+interface GestionTableProps {
+  showModal: () => void;
+}
+
+export const GestionTable: FC<GestionTableProps> = ({ showModal }) => {
   const personal = usePersonalStore((state) => state.personal);
-  const { page, totalPages, nextPage, previousPage, goPage } = usePersonalStore(
-    (state) => state
-  );
+  const { page, totalPages, nextPage, previousPage, goPage, setOnePersonal } =
+    usePersonalStore((state) => state);
+
+  const EditarPersonal = (personal: User) => {
+    setOnePersonal(personal);
+    showModal();
+  };
 
   return (
     <Table
@@ -54,7 +64,9 @@ export const GestionTable = () => {
               )}
             </TableCell>
             <TableCell className="text-right flex gap-3">
-              <Button variant="secondary">Editar</Button>
+              <Button variant="secondary" onClick={() => EditarPersonal(user)}>
+                Editar
+              </Button>
               <Button variant="destructive">Eliminar</Button>
             </TableCell>
           </TableRow>

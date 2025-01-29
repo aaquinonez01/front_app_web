@@ -1,5 +1,5 @@
 // components/ModernCalendar.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useAppointmentStore } from "../store/appointmentStore";
@@ -9,6 +9,16 @@ import { Button } from "@/components/ui/button";
 import { DayPicker } from "@/components/ui/daypicker";
 import { WeekPicker } from "@/components/ui/weekpicker";
 import { MonthPicker } from "@/components/ui/monthpicker";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useMedicStore } from "../store/medicStore";
 
 const locales = {
   "es-ES": es,
@@ -24,6 +34,10 @@ const localizer = dateFnsLocalizer({
 
 export const CalendarAppointment = () => {
   const events = useAppointmentStore((state) => state.events);
+  const getAppointmentsByMedic = useAppointmentStore(
+    (state) => state.getAppointmentByMedic
+  );
+  const medics = useMedicStore((state) => state.medics);
   const selectEvent = useAppointmentStore((state) => state.selectAppointment);
   const [currentView, setCurrentView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -34,6 +48,14 @@ export const CalendarAppointment = () => {
   const handleDateChange = (date: Date) => {
     setCurrentDate(date);
   };
+
+  const handleMedicChange = (medicId: string) => {
+    getAppointmentsByMedic(medicId);
+  };
+
+  useEffect(() => {
+    console.log(events);
+  }, [events]);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -51,7 +73,23 @@ export const CalendarAppointment = () => {
             <MonthPicker value={currentDate} onChange={handleDateChange} />
           )}
         </div>
-        <div></div>
+        <div>
+          <Select onValueChange={(value) => handleMedicChange(value)}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Seleccione Un Medico" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Medicos</SelectLabel>
+                {medics.map((medic) => (
+                  <SelectItem key={medic.id} value={medic.id}>
+                    {medic.firstname} {medic.lastname}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <div className="flex gap-2">
           <Button onClick={() => handleViewChange("day")}>Día</Button>
           <Button onClick={() => handleViewChange("week")}>Semana</Button>

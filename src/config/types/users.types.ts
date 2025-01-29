@@ -4,7 +4,7 @@ export interface PersonalResponse {
 }
 
 export interface User {
-  id: string;
+  id?: string;
   email: string;
   password: string;
   username: string;
@@ -14,7 +14,7 @@ export interface User {
 }
 
 export interface UserInformation {
-  id: string;
+  id?: string;
   userId: string;
   firstName: string;
   lastName: string;

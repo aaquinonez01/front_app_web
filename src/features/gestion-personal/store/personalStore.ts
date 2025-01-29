@@ -7,6 +7,7 @@ interface PersonalState {
   loading: boolean;
   errorMessage: string;
   onePersonal: User;
+  setOnePersonal: (personal: User | null) => void;
   page: number;
   totalPages: number;
   totalElements: number;
@@ -57,15 +58,23 @@ export const usePersonalStore = create<PersonalState>((set, get) => ({
       set({ errorMessage: response.error, loading: false });
     }
   },
+  setOnePersonal: (personal: User | null) => {
+    if (!personal) {
+      set({ onePersonal: {} as User });
+      return;
+    }
+    set({ onePersonal: personal });
+  },
   getOnePersonal: async (id: number) => {
     set({ loading: true });
-    try {
-      const response = await fetch(`http://localhost:3000/personal/${id}`);
-      const data = await response.json();
-      set({ onePersonal: data, loading: false });
-    } catch (error) {
-      set({ errorMessage: error.message, loading: false });
-    }
+    console.log("id", id);
+    // try {
+    //   const response = await fetch(`http://localhost:3000/personal/${id}`);
+    //   const data = await response.json();
+    //   set({ onePersonal: data, loading: false });
+    // } catch (error) {
+    //   set({ errorMessage: response, loading: false });
+    // }
   },
   nextPage: async () => {
     set({ loading: true });

@@ -35,6 +35,7 @@ export const AppRoutes = () => {
       ) : (
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       )}
     </>

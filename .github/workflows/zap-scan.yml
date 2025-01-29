@@ -1,0 +1,52 @@
+name: OWASP ZAP Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  zap-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descargar el código fuente desde el repositorio
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configurar Node.js con una versión compatible
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Cambia a Node.js 18.x para compatibilidad con pnpm
+
+      # 3. Instalar pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # 4. Instalar dependencias con pnpm
+      - name: Install dependencies
+        run: pnpm install
+
+      # 5. Construir y ejecutar el servidor local con pnpm
+      - name: Start local server
+        run: |
+          pnpm run dev &
+          sleep 15  # Espera para asegurar que el servidor esté disponible
+
+      # 6. Ejecutar OWASP ZAP sin instalación previa
+      - name: Run OWASP ZAP scan
+        uses: zaproxy/action-full-scan@v0.12.0
+        with:
+          target: "http://localhost:3000"
+          fail_on_warn: true
+
+      # 7. Subir los resultados del análisis
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: zap-results/*
