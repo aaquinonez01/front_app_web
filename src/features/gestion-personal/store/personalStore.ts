@@ -1,17 +1,22 @@
 import { User } from "@/config/types/users.types";
 import { create } from "zustand";
 import { getPersonal } from "../services/getPersonal.service";
-
+import { Personalregister } from "@/config/types/personalRegister.types";
+import { createPersonal } from "../services/createPersonal.service";
+import { toast } from "sonner";
 interface PersonalState {
   personal: User[];
+  isModalOpen: boolean;
+  toggleModal: (isOpen: boolean) => void;
   loading: boolean;
   errorMessage: string;
   onePersonal: User;
-  setOnePersonal: (personal: User | null) => void;
   page: number;
   totalPages: number;
   totalElements: number;
   limit: number;
+  savePersonal: (personal: Personalregister, role: string) => void;
+  setOnePersonal: (personal: User | null) => void;
   addPersonal: (personal: User) => void;
   updatePersonal: (personal: User) => void;
   deletePersonal: (id: string) => void;
@@ -28,6 +33,8 @@ export const usePersonalStore = create<PersonalState>((set, get) => ({
   errorMessage: "",
   onePersonal: {} as User,
   page: 0,
+  isModalOpen: false,
+  toggleModal: (isOpen: boolean) => set({ isModalOpen: isOpen }),
   totalPages: 0,
   totalElements: 0,
   limit: 10,
@@ -57,6 +64,30 @@ export const usePersonalStore = create<PersonalState>((set, get) => ({
     } else {
       set({ errorMessage: response.error, loading: false });
     }
+  },
+  savePersonal: async (personal: Personalregister, role: string) => {
+    const personalPromise = async () => {
+      set({ loading: true });
+
+      try {
+        const response = await createPersonal(personal, role);
+        if (response.success && response.data) {
+          set({ loading: false });
+          return response.data; // Devolver los datos para la notificación de éxito
+        } else {
+          throw new Error(response.error || "Error desconocido");
+        }
+      } catch (error) {
+        set({ errorMessage: error.message, loading: false });
+        throw error; // Lanzar el error para que sea capturado por `toast.promise`
+      }
+    };
+
+    toast.promise(personalPromise(), {
+      loading: "Guardando usuario...",
+      success: (data) => `${data.username} ha sido registrado exitosamente`,
+      error: (error) => `Error: ${error.message}`,
+    });
   },
   setOnePersonal: (personal: User | null) => {
     if (!personal) {

@@ -1,5 +1,5 @@
 import { Button, Input } from "@/components/ui";
-
+import { Toaster } from "sonner";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { UserPlus } from "lucide-react";
 import { GestionTable } from "../components/gestionTable";
@@ -27,20 +27,15 @@ export const GestionarPersonalPage = () => {
       <h1 className="text-2xl font-semibold text-gray-800">
         Gestion del Personal
       </h1>
-      <section className="mt-6 flex justify-between items-center mx-10">
-        <div className="flex justify-between items-center w-1/3">
-          <Input placeholder="Buscar personal" />
-        </div>
-        <Button className="">
-          <span
-            className="mr-2"
-            onClick={() => {
-              setOnePersonal(null);
-              mostrarModal();
-            }}
-          >
-            Nuevo Personal
-          </span>
+      <section className="mt-6 flex justify-end items-center mx-10">
+        <Button
+          className="w-1/4"
+          onClick={() => {
+            setOnePersonal(null);
+            mostrarModal();
+          }}
+        >
+          <span className="mr-2">Nuevo Personal</span>
           <UserPlus className="h-4 w-4" />
         </Button>
       </section>
@@ -49,6 +44,7 @@ export const GestionarPersonalPage = () => {
       </section>
 
       {showModal && <CreateEditModal onClose={cerrarModal} />}
+      <Toaster />
     </DashboardLayout>
   );
 };

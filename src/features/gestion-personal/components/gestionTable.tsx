@@ -23,7 +23,7 @@ export const GestionTable: FC<GestionTableProps> = ({ showModal }) => {
   const { page, totalPages, nextPage, previousPage, goPage, setOnePersonal } =
     usePersonalStore((state) => state);
 
-  const EditarPersonal = (personal: User) => {
+  const EliminarPersonal = (personal: User) => {
     setOnePersonal(personal);
     showModal();
   };
@@ -58,15 +58,12 @@ export const GestionTable: FC<GestionTableProps> = ({ showModal }) => {
             </TableCell>
             <TableCell className="text-right">
               {user.isActive ? (
-                <span className="text-green-500">Activo</span>
+                <span className="text-green-500 text-start">Activo</span>
               ) : (
-                <span className="text-red-500">Inactivo</span>
+                <span className="text-red-500 text-start">Inactivo</span>
               )}
             </TableCell>
-            <TableCell className="text-right flex gap-3">
-              <Button variant="secondary" onClick={() => EditarPersonal(user)}>
-                Editar
-              </Button>
+            <TableCell className="text-right flex gap-3 justify-between">
               <Button variant="destructive">Eliminar</Button>
             </TableCell>
           </TableRow>

@@ -1,5 +1,13 @@
 import { menuSidemar } from "@/config/types/menuSidebar.types";
-import { Calendar, ClipboardMinus, Home, Settings, Users } from "lucide-react";
+import {
+  Calendar,
+  ClipboardMinus,
+  Home,
+  ListChecksIcon,
+  PersonStanding,
+  Settings,
+  Users,
+} from "lucide-react";
 
 export const menuSidebar: menuSidemar[] = [
   {
@@ -23,8 +31,8 @@ export const menuSidebar: menuSidemar[] = [
     icon: <Calendar className="mr-2 h-5 w-5" />,
   },
   {
-    name: "Configuración",
-    href: "/configuracion",
-    icon: <Settings className="mr-2 h-5 w-5" />,
+    name: "Listado de Pacientes",
+    href: "/listado-pacientes",
+    icon: <ListChecksIcon className="mr-2 h-5 w-5" />,
   },
 ];

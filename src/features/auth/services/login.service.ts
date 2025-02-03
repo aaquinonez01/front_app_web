@@ -43,6 +43,15 @@ export const login = async (
       // Accedemos a error.response para manejar los códigos de estado de la API
       const status = error.response.status;
 
+      if (status === 400) {
+        return {
+          success: false,
+          error:
+            error.response.data.message ||
+            "Credenciales inválidas. Por favor, verifica tu email y contraseña.",
+        };
+      }
+
       if (status === 401) {
         return {
           success: false,

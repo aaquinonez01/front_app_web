@@ -7,6 +7,7 @@ import { HistoriaClinicaPage } from "@/features/historial-medical/pages/Historia
 import { GestionarPersonalPage } from "@/features/gestion-personal/pages/GestionarPersonalPage";
 import { CalendarioPage } from "@/features/calendar/pages/CalendarioPage";
 import LoadingSpinner from "@/shared/components/Loading";
+import { ListadoPacientePage } from "@/features/listado-patient/pages/ListadoPacientePage";
 
 export const AppRoutes = () => {
   const status = useAuthStore((state) => state.status);
@@ -30,6 +31,7 @@ export const AppRoutes = () => {
           <Route path="/calendario" element={<CalendarioPage />} />
           <Route path="/historias-clinicas" element={<HistoriaClinicaPage />} />
           <Route path="/gestion-personal" element={<GestionarPersonalPage />} />
+          <Route path="/listado-pacientes" element={<ListadoPacientePage />} />
           <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       ) : (
