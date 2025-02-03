@@ -1,6 +1,6 @@
 // components/ModernCalendar.tsx
 import { useEffect, useState } from "react";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useAppointmentStore } from "../store/appointmentStore";
 import { format, parse, startOfWeek, getDay } from "date-fns";
@@ -104,7 +104,7 @@ export const CalendarAppointment = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: "75vh" }}
-        view={currentView}
+        view={currentView as View}
         date={currentDate}
         onView={handleViewChange}
         min={new Date(0, 0, 0, 5, 0)}

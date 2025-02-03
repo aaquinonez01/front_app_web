@@ -4,8 +4,6 @@ import {
   ClipboardMinus,
   Home,
   ListChecksIcon,
-  PersonStanding,
-  Settings,
   Users,
 } from "lucide-react";
 

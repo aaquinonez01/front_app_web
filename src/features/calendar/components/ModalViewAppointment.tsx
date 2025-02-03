@@ -13,7 +13,7 @@ export const ModalVIewAppointment = () => {
     (state) => state.selectedAppointment
   );
   const selectEvent = useAppointmentStore((state) => state.selectAppointment);
-  const handleClose = () => selectEvent(null);
+  const handleClose = () => selectEvent("");
 
   return (
     <Dialog open={!!selectedEvent} onOpenChange={handleClose}>

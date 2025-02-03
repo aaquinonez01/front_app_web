@@ -47,7 +47,7 @@ export const login = async (
         return {
           success: false,
           error:
-            error.response.data.message ||
+            error.message ||
             "Credenciales inválidas. Por favor, verifica tu email y contraseña.",
         };
       }

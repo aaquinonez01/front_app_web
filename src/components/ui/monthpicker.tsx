@@ -1,6 +1,6 @@
 // components/ui/MonthPicker.tsx
 import { Calendar as CalendarIcon } from "lucide-react";
-import { format, startOfMonth, endOfMonth } from "date-fns";
+import { format, startOfMonth } from "date-fns";
 import {
   Popover,
   PopoverContent,
@@ -16,7 +16,6 @@ interface MonthPickerProps {
 
 export const MonthPicker = ({ value, onChange }: MonthPickerProps) => {
   const start = startOfMonth(value);
-  const end = endOfMonth(value);
 
   return (
     <Popover>

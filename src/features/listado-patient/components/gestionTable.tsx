@@ -58,7 +58,7 @@ export const GestionTable: FC<GestionTableProps> = ({ showModal }) => {
                 {paciente.firstname} {paciente.lastname}
               </TableCell>
               <TableCell className="">
-                {paciente.birthdate.split("T")[0]}
+                {new Date(paciente.birthdate).toLocaleDateString("es-ES")}
               </TableCell>
               <TableCell className="font-medium">
                 {paciente.legalGuardian}

@@ -13,9 +13,10 @@ import { TabFormPersonalMedic } from "./TabFormPersonalMedic";
 import { useForm, FormProvider } from "react-hook-form";
 
 export const CreateEditModal = ({ onClose }: { onClose: () => void }) => {
-  const { onePersonal, savePersonal } = usePersonalStore();
+  const { savePersonal } = usePersonalStore();
   const methods = useForm();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     console.log(data);
     savePersonal(data, data.role);
@@ -39,7 +40,7 @@ export const CreateEditModal = ({ onClose }: { onClose: () => void }) => {
                 <TabFormPersonalUser />
               </TabsContent>
               <TabsContent value="medic">
-                <TabFormPersonalMedic personal={onePersonal} />
+                <TabFormPersonalMedic />
               </TabsContent>
             </Tabs>
             <DialogFooter className="mt-4">
