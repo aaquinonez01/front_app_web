@@ -1,4 +1,4 @@
-import { Button, Input } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Toaster } from "sonner";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { UserPlus } from "lucide-react";
@@ -40,7 +40,7 @@ export const GestionarPersonalPage = () => {
         </Button>
       </section>
       <section className=" mx-auto mt-6">
-        <GestionTable showModal={mostrarModal} />
+        <GestionTable />
       </section>
 
       {showModal && <CreateEditModal onClose={cerrarModal} />}
