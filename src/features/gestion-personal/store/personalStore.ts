@@ -78,7 +78,10 @@ export const usePersonalStore = create<PersonalState>((set, get) => ({
           throw new Error(response.error || "Error desconocido");
         }
       } catch (error) {
-        set({ errorMessage: error.message, loading: false });
+        set({
+          errorMessage: "Error Detectado, Verifique con l administrador",
+          loading: false,
+        });
         throw error; // Lanzar el error para que sea capturado por `toast.promise`
       }
     };
