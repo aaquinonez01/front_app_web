@@ -44,12 +44,13 @@ jobs:
           echo "Todas las pruebas pasaron exitosamente."
 
   sonarqube:
-    runs-on: ubuntu-latest
+    name: SonarQube
+    runs-on: ubuntu-latest  # Cambiado de Windows a Ubuntu para mejor compatibilidad
     needs: testCalidadUnitaria
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1  # Análisis más rápido excepto en main
+          fetch-depth: 0  # Permite un análisis más profundo del historial de cambios
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
