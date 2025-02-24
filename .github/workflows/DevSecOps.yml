@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - DevSecOps
+  workflow_dispatch:  # Permite ejecución manual
+
+permissions:
+  contents: write  # Permiso necesario para hacer el merge
 
 jobs:
   gitleaks:
@@ -34,18 +38,18 @@ jobs:
       - name: Instalar dependencias
         run: |
           echo "Instalando dependencias de Next.js..."
-          sleep 10  # 
+          sleep 10
           echo "Instalación completada."
 
       - name: Ejecutar pruebas unitarias (Simulado)
         run: |
           echo "Ejecutando pruebas unitarias..."
-          sleep 30  # 
+          sleep 30
           echo "Todas las pruebas pasaron exitosamente."
 
   sonarqube:
     name: SonarQube
-    runs-on: ubuntu-latest  # Cambiado de Windows a Ubuntu para mejor compatibilidad
+    runs-on: ubuntu-latest
     needs: testCalidadUnitaria
     steps:
       - uses: actions/checkout@v4
@@ -94,11 +98,12 @@ jobs:
 
   merge_devsecops_to_main:
     runs-on: ubuntu-latest
+    needs: OWASP_ZAP_SCAN  # Solo se ejecuta si pasa la seguridad
     steps:
-      - name: Checkout código
+      - name: Checkout del código
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Clona todo el historial
+          fetch-depth: 0  # Clona todo el historial para evitar problemas de merge
 
       - name: Fusionar DevSecOps en main
         run: |
@@ -107,4 +112,10 @@ jobs:
           git merge --no-ff DevSecOps -m "🔀 Merge automático de DevSecOps a main"
           git push origin main
 
+      - name: Notificar éxito
+        if: success()
+        run: echo "✅ Merge exitoso de DevSecOps a main"
 
+      - name: Notificar error
+        if: failure()
+        run: echo "❌ Error en el merge. Se requiere intervención manual."
