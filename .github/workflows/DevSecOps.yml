@@ -92,27 +92,19 @@ jobs:
           name: zap-report
           path: .
 
-  merge_to_main:
+  merge_devsecops_to_main:
     runs-on: ubuntu-latest
-    needs: OWASP_ZAP_SCAN
     steps:
-      - name: Checkout del código
+      - name: Checkout código
         uses: actions/checkout@v3
         with:
-          ref: DevSecOps  # Asegura que esté en la rama DevSecOps antes de hacer el merge
+          fetch-depth: 0  # Clona todo el historial
 
-      - name: Configurar usuario de Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Hacer merge a main
+      - name: Fusionar DevSecOps en main
         run: |
           git checkout main
-          git pull origin main  # Asegura que la rama main esté actualizada
-          git merge --no-ff DevSecOps -m "Merge automático desde DevSecOps a main [CI/CD]"
-          git push origin main  # Sube los cambios a GitHub
+          git pull origin main
+          git merge --no-ff DevSecOps -m "🔀 Merge automático de DevSecOps a main"
+          git push origin main
 
-      - name: Confirmar merge
-        run: echo "Merge de DevSecOps a main completado con éxito."
 
