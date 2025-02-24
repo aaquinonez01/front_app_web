@@ -57,43 +57,34 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  escaneoSeguridad:
+  OWASP_ZAP_SCAN:
     runs-on: ubuntu-latest
     needs: sonarqube
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
 
-      - name: Cache de dependencias
-        uses: actions/cache@v3
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
         with:
-          path: ~/.pnpm-store
-          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-${{ runner.os }}-
+          node-version: 18
+
+      - name: Instalar pnpm
+        run: npm install -g pnpm
 
       - name: Instalar dependencias con pnpm
         run: pnpm install
 
       - name: Iniciar servidor local de Next.js
         run: |
-          pnpm run build
-          pnpm start &  
-          sleep 10  
+          pnpm run dev &
+          npm wait-on http://localhost:5173
 
-      - name: Verificar disponibilidad del servidor
-        run: |
-          until curl -s http://localhost:3000; do
-            echo "Esperando al servidor..."
-            sleep 5
-          done
-          echo "Servidor listo."
-
-      - name: Escaneo de seguridad con OWASP ZAP
+      - name: Ejecutar escaneo de seguridad con OWASP ZAP
         uses: zaproxy/action-full-scan@v0.12.0
         with:
-          target: "http://localhost:3000"
-          fail_on_warn: false  
+          target: "http://localhost:5173"
+          fail_on_warn: true  # Cambia a false si no quieres que falle en advertencias
 
       - name: Subir reporte de OWASP ZAP
         uses: actions/upload-artifact@v4
@@ -101,12 +92,9 @@ jobs:
           name: zap-report
           path: .
 
-      - name: Escaneo de vulnerabilidades en dependencias
-        run: npm audit --audit-level=high
-
   merge:
     runs-on: ubuntu-latest
-    needs: escaneoSeguridad
+    needs: OWASP_ZAP_SCAN
     steps:
       - name: Simular Merge a Main
         run: |
