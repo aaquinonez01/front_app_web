@@ -1,4 +1,4 @@
-name: CI/CD para Frontend con Seguridad 
+name: CI/CD para Frontend con Seguridad
 
 on:
   push:
